@@ -21,3 +21,11 @@ View(mpg)
 # hwy: nº de millas recorridas en autopista por galón de combustible. (3,785411784 litros)
 # Es una medida de la eficencia energética cuando el coche va por la autopista, cuántas millas
 #es capaz de recorrer sólo con un galón de gasolina. 
+
+#Scatter plot(nube de puntos)
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+# Este gráfico nos muestra una relación negativa entre el tamaño del motor
+# y la eficiencia energética del combustible, es decir, cuánto mayor es el motor, 
+# menos millas hace el coche, menor eficiencia y por tanto, más gasta el vehículo. 
