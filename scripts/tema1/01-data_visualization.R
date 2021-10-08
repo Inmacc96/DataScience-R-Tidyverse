@@ -93,3 +93,23 @@ ggplot(data = mpg)+
   geom_point(mapping = aes(x = displ, y = hwy),
              shape = 23, size = 10, color = "red",
              fill = "yellow")
+
+
+## FACETS: Dividir el plot en subplots, cada una correspondiente a una categoría.
+# facet_wrap(~<FORMULA_VARIABLE>): La variable debe ser discreta categórica. Realiza un
+#gráfico para cada categoría.
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + #Representacion de los datos
+  facet_wrap(~class, nrow = 3) #Distribución, segmentación segun una variable.
+
+# facet_grid(<FORMULA_VARIABLE1>~<FORMULA_VARIABLE2>) Para combinar dos
+# variables categóricas.
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv~cyl)
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(.~cyl)
