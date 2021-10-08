@@ -113,3 +113,22 @@ ggplot(data = mpg) +
 ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy)) +
   facet_grid(.~cyl)
+
+
+# OBJETO GEOMÉTRICO:
+# Es lo que se utiliza en ggplot2 para representar visualmente el dato.
+
+# Diferentes geometrías:
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv, color = drv))
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy,  color = drv)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv, color = drv))
