@@ -29,3 +29,67 @@ ggplot(data = mpg) +
 # Este gráfico nos muestra una relación negativa entre el tamaño del motor
 # y la eficiencia energética del combustible, es decir, cuánto mayor es el motor, 
 # menos millas hace el coche, menor eficiencia y por tanto, más gasta el vehículo. 
+
+
+# Queremos ver si aquellos puntos que salen del patrón general, es decir aquellos
+# con un alto displ y bajo hwy (denominados outliers) se corresponden a vehículos
+#híbridos ya que así justificaría que se diese esta situación ya que no sólo gastan
+# combustible sino que gastan electricidad.
+
+#Para llevar a cabo lo anterior, vamos a utilizar la variable class y vamos a 
+#a representar la nube de puntos en función de dicha variable. Para ello, se
+#modifica la estética de los puntos "aes". La estética incluye la posición, el 
+# tamaño, forma o incluso el color de los puntos.
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+
+# La conclusión que podemos sacar es que casi todos estos outliers (gran tamaño
+#de motor pero bajo nivel de consumo) son coches 2seater, coches de dos asientos,
+#es decir, coche para dos personas. Un 2seater podría ser un convertible, 
+#un descapotable o coches pequeños. 
+#En efecto, estos coches no tienen pinta de que vayan a ser híbridos, de hecho
+#un coche de dos asientos es todo lo contrario, es un deportivo. Sin embargo, 
+#parece ser que los coches deportivos tienen un motor más grande en cuanto a 
+#capacidad de combustible que un suv (utilitario común familiar) ya que están
+#mucho más a la derecha, incluso también más que las furgonetas pickup, pero
+#también tiene un cuerpo más pequeño que un compacto o un midsize, lo que hace que 
+#compense el tener un motor grande y ser más ergónomico, aereodinámico para
+#obtener un número de millas más alto por unidad de galón. Por tanto, estos 
+#coches parece ser que cumplen las expectativas y cuadran con los datos que teníamos.
+
+#También podríamos haber mapeado la clase a la estética del tamaño de los puntos:
+# (conviene que sea numérico)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = class))
+
+#Ahora podríamos utilizar la estética de alpha que controle la transparencia
+#de los puntos.
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
+
+# A continuación vamos a utilizar la estética de la forma de los puntos.
+#(solo permite 6 formas a la vez).
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+
+#Además podemos elegir de forma manual la estética.
+#Estética global:fuera del mapping
+
+ggplot(data = mpg)+
+  geom_point(mapping = aes(x = displ, y = hwy), color = "red")
+#color = nombre del color en formato string
+#size = tamaño del punto en mm
+#shape = forma del punto con números desde el 0 al 25.
+# 0 - 14: son formas huecas y por tanto sólo se le puede cambiar el color.
+# 15 - 20: son formas rellenas de color, por tanto se le puede cambiar el color.
+# 21 - 25: son formas con borde y relleno, y se les puede cambiar el color (borde)
+# y el fill (relleno).
+
+ggplot(data = mpg)+
+  geom_point(mapping = aes(x = displ, y = hwy),
+             shape = 23, size = 10, color = "red",
+             fill = "yellow")
