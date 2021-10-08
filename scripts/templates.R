@@ -54,3 +54,12 @@ ggplot() +
   geom_point(data=d, mapping=aes(x=p%%16, y=p%/%16, shape=p), size=5, fill="red") +
   geom_text(data=d, mapping=aes(x=p%%16, y=p%/%16+0.25, label=p), size=3)
 
+
+# Facets ----
+
+# Divide the plot into subplots, each corresponding to a category.
+
+# facet_wrap(~<FORMULA_VARIABLE>): The variable must be discrete categorical.
+
+# facet_grid(<FORMULA_VARIABLE1>~<FORMULA_VARIABLE2>) To combine two 
+# categorical variables
