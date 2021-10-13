@@ -241,3 +241,58 @@ ggplot(data = diamonds) +
                fun = mean)
 # Vemos que no hay mucha diferencia de precio entre calidades del diamante.
 
+
+# Colores y formas de los gráficos:
+
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, colour = cut))
+
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, fill = cut))
+
+# Diagrama de barras apilado: apila las barras
+# position = stack 
+ggplot(data = diamonds)+
+  geom_bar(mapping = aes(x = cut, fill = color))
+
+ggplot(data = diamonds)+
+  geom_bar(mapping = aes(x = cut, fill = clarity))
+
+## position = "identity": se suporponen las barras
+
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity))+
+  geom_bar(position = "identity", alpha = 0.2)
+
+ggplot(data = diamonds, mapping = aes(x = cut, colour = clarity))+
+  geom_bar(position = "identity", fill = NA)
+
+## position = "fill": para comparar proporciones
+
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity))+
+  geom_bar(position = "fill")
+
+## position = "dodge":para cada categoria tiene un diagrama de barras
+
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity))+
+  geom_bar(position = "dodge")
+
+
+# Volvemos al scatterplot: No pinta todos los puntos ya que se redondean
+#los valores de hwy y displ por lo que hay puntos que se suponerponen.
+# A este problema se le denonima OVERPLOTTING. No podemos ver la concentración
+# de los vehiculos.
+
+#position = "jitter": Añade ruido a los puntos.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point(position = "jitter")
+
+# Realmente se utiliza:
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_jitter()
+
+?position_stack
+?position_identity
+?position_fill
+?position_dodge
+?position_jitter
+
