@@ -296,3 +296,43 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 ?position_dodge
 ?position_jitter
 
+
+# Sistemas de Coordenadas ----
+
+# coord_flip() -> cambia los papeles de x e y flip:girar.
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot() +
+  coord_flip()
+
+# BOXPLOT: Entre 1 cuartil y la mediana hay un 25% de los datos y entre la mediana y
+# el 3 cuartil hay un 25 % de los datos. Por tanto en la caja cae entre el 25 y 75%
+# de los datos.
+
+
+# coord_quickmap() -> configura el aspect ratio para mapas
+
+usa <- map_data("usa")
+
+ggplot(usa, mapping = aes(long,lat, group = group)) +
+  geom_polygon(fill = "blue", color = "white") +
+  coord_quickmap()
+
+italy <- map_data("italy")
+
+ggplot(italy, mapping = aes(long,lat, group = group)) +
+  geom_polygon(fill = "blue", color = "white") +
+  coord_quickmap()
+
+
+# coord_polar() -> coordenadas polares
+
+ggplot(data = diamonds) +
+  geom_bar(
+    mapping = aes(x = cut, fill = cut),
+    show.legend = F,
+    width = 1
+  ) +
+  theme(aspect.ratio = 1) + # el gráfico es completamente cuadrado
+  labs(x = NULL, y = NULL) +
+  coord_polar()
+
