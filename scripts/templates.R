@@ -2,7 +2,13 @@
 # Template for making a graphical representation with ggplot2 ----
 
 # ggplot(data = <DATA_FRAME>) +
-#   <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+#    <GEOM_FUNCTION>(
+#                    mapping = aes(<MAPPINGS>),
+#                    stat = <STAT>,
+#                    position = <POSITION>
+#                    ) +
+#     <COORDINATE_FUNCTION>() +
+#     <FACET_FUNCTION>()
 
 
 # Aesthetics ggplot2 ----
