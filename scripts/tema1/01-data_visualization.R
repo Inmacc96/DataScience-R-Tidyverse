@@ -160,11 +160,45 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 
 
 #Además, podemos realizar una geometría sobre un subconjunto de los datos.
-#Cada geometría puede tener su propio mapping (local) y siempre prevalecerá al mapping
-#global.
+# Cada geometría puede tener su propio mapping (local) y siempre prevalecerá al 
+#mapping global.
 
 ggplot(data = mpg, mapping = aes( x = displ, y = hwy)) +
   geom_point(mapping = aes(color = class)) +
   geom_smooth(data = filter(mpg, class == "suv"), se = F)
 
 #se: Elimina el intervalo de confianza.
+
+
+
+
+# Ejemplo del dataset de diamantes----
+
+View(diamonds)
+?diamonds
+# carat: El peso del diamante(en kilates)
+# cut: Calidad de corte del diamante (Regular, Bueno, Muy bueno, Premium, Ideal)
+# color: El color del diamante, desde D (el mejor) hasta J (el peor).
+# clarity: Una medida de la claridad del diamante (I1 (peor), SI2, SI1, 
+# VS2, VS1, VVS2, VVS1, IF (mejor))
+# depth: Porcentaje total de profundidad
+# table: Anchura de la parte superior del diamante en relación con el punto 
+# más ancho
+# price: El precio del diamante en dólares
+# x, y, z: longitud, anchura y profundidad del diamente en milimétros.
+
+## Diagrama de barras ----
+
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut))
+
+?geom_bar
+# Utiliza la función stat_count() que cuenta el nº de casos para cada categoría.
+
+ggplot(data = diamonds) +
+  stat_count(mapping = aes(x = cut))
+
+#Esta transformación funciona porque toda la geometria tiene por defecto un stat.
+# Todos los stat se corresponden a una geometría por defecto.Por tanto, podemos
+# usar la geometría sin preocuparnos de las transformación estadísticas(stat) 
+#subyacentes.
