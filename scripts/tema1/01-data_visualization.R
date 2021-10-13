@@ -202,3 +202,42 @@ ggplot(data = diamonds) +
 # Todos los stat se corresponden a una geometría por defecto.Por tanto, podemos
 # usar la geometría sin preocuparnos de las transformación estadísticas(stat) 
 #subyacentes.
+
+
+demo_diamonds <- tribble(
+  ~cut,       ~freqs,
+  "Fair",       1610,
+  "Good",       4906,
+  "Very Good", 12082,
+  "Premium",   13791,
+  "Ideal",     21551
+)
+
+# Nº de casos:
+ggplot(data = demo_diamonds) +
+  geom_bar(mapping = aes(x = cut, y = freqs),
+           stat = "identity" )
+
+# Proporción de casos:
+
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1)) 
+#group = 1: Para que haya una agrupación por filas, es decir, agrupación 
+# de las x. La suma debe dar 1.
+
+ggplot(data = diamonds) +
+  stat_summary(mapping = aes(x = cut, y = depth),
+               fun.min = min,
+               fun.max = max,
+               fun = median)
+# Estamos representando el min, max y mediana de la profundidad para cada 
+#clase de corte.
+
+# Resumen estadístico:
+ggplot(data = diamonds) +
+  stat_summary(mapping = aes(x = cut, y = price),
+               fun.min = min,
+               fun.max = max,
+               fun = mean)
+# Vemos que no hay mucha diferencia de precio entre calidades del diamante.
+
