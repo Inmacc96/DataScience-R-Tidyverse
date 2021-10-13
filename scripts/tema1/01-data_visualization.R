@@ -132,3 +132,39 @@ ggplot(data = mpg) +
 ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy,  color = drv)) +
   geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv, color = drv))
+
+
+
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy ,group = drv, color = drv))
+
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, group = drv, color = drv),
+              show.legend = T)
+# Estamos forzando que nos aparezca la leyenda con el argumento show.legend
+
+
+ggplot(data = mpg)+
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x= displ, y = hwy))
+
+# En el código anterior estamos aplicando dos geometrías, pero el problema
+#que existe es que se repite el mapping en ambos casos, y si queremos cambiar
+#por ejemplo, la variable y tendríamos que hacerlo en cada geometría y se nos
+#podría olvidar en alguna y la liamos. Por esta razón, la estética se suele
+# introducir en el ggplot para que sea globales para todas las geometrías.
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point(mapping = aes(shape = class)) +
+  geom_smooth(mapping = aes(color = drv))
+
+
+#Además, podemos realizar una geometría sobre un subconjunto de los datos.
+#Cada geometría puede tener su propio mapping (local) y siempre prevalecerá al mapping
+#global.
+
+ggplot(data = mpg, mapping = aes( x = displ, y = hwy)) +
+  geom_point(mapping = aes(color = class)) +
+  geom_smooth(data = filter(mpg, class == "suv"), se = F)
+
+#se: Elimina el intervalo de confianza.
