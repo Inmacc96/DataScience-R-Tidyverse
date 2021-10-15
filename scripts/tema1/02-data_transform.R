@@ -110,3 +110,38 @@ filter(df, is.na(x) | x > 2)
 
 # NOTA: filter excluirá las filas con NA por defecto, para tenerlos en cuenta
 # habría que usar is.na a la condición.
+
+# Primeras y últimas filas del data frame
+head(flights, 10)
+tail(flights, 10)
+
+
+### ARRANGE ----
+
+# Todos los vuelos ordenados por año
+arrange(flights, year)
+
+# Todos los vuelos ordenados por año, luego por mes y por último por día.
+sorted_date <- arrange(flights, year, month, day)
+
+head(sorted_date)
+tail(sorted_date)
+
+# NOTA: Por defecto ARRANGE() ordena de menor a mayor.
+
+# Todos los vuelos ordenados desde mayor tiempo de retraso de llegada a menor
+#tiempo.
+arrange(flights, desc(arr_delay))
+
+# Los valores NA de la columna siempre quedarán al final.
+arrange(df, desc(x))
+arrange(df, desc(x))
+
+# Vuelo que menos distancia recorrió
+arrange(flights, distance)[1,]
+
+# Parece ser que directamente no partió
+
+# Vuelo que más distancia recorrió
+arrange(flights, desc(distance))[1,]
+
