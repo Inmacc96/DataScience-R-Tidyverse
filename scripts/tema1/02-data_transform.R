@@ -35,3 +35,25 @@ View(flights)
 # 2 - operaciones que queremos hacer a las variables del data frame
 # 3 - resultado en un nuevo data frame
 
+
+### FILTER ----
+
+# Todos los vuelos que salieron el 1 de Enero.
+jan1 <- filter(flights, month == 1, day == 1)
+
+# Todos los vuelos que salieron el día de mi cumpleaños
+sept23 <- filter(flights, month == 9, day == 23)
+
+# Todos los vuelos que salieron el día de navidad.
+(dic25 <- filter(flights, month == 12, day == 25))
+
+# Signos de comparación:
+# >, >=, <, <=, ==, !=
+
+## Problemas con la igualdad
+2==2
+sqrt(2)^2 == 2
+near(sqrt(2)^2,2)
+1/49 * 49 == 1
+near(1/49 * 49 , 1)
+
