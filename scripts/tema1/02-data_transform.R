@@ -81,3 +81,32 @@ filter(flights, !(arr_delay > 60 | dep_delay > 60))
 filter(flights, arr_delay <= 60, dep_delay <= 60)
 
 # NOTA: Intentar siempre filtrar a partir de variables explicitas del data frame.
+
+
+## VALORES FALTANTES:
+
+NA > 0
+10 == NA
+NA + 5
+NA / 5
+NA == NA
+
+# La tía Mery tiene una edad desconocida. No sé como de vieja es...
+age_mery <- NA
+
+# El tío John también hace mucho que no lo veo y no sé cuantos años tendrá.
+age_john <- NA
+
+# ¿Deben tener la misma edad John y Mery?
+age_mery == age_john
+
+# Nota: Cualquier operación que hagamos con NA acabará obteniéndose otro NA.
+
+is.na(age_mery)
+
+df <- tibble(x = c(1,2,NA,4,5))
+filter(df, x > 2)
+filter(df, is.na(x) | x > 2)
+
+# NOTA: filter excluirá las filas con NA por defecto, para tenerlos en cuenta
+# habría que usar is.na a la condición.
