@@ -57,3 +57,27 @@ near(sqrt(2)^2,2)
 1/49 * 49 == 1
 near(1/49 * 49 , 1)
 
+## Álgebra de Bool:
+# & : Conjunción
+# | : Disyunción
+# ! : Negación
+# xor(): Disyunción exclusiva
+
+
+# Todos los vuelos que salieron en Mayo o en Junio.
+filter(flights, month == 5 | month == 6)
+
+# INCORRECTO:
+filter(flights, month == 5 | 6)
+
+may_june <- filter(flights, month  %in% c(5,6))
+
+## LEYES DE MORGAN:
+# !(x & y) == (!x) | (!y)
+# !(x | y) == (!x) & (!y)
+
+# Vuelos que salieron con no más de una hora de retraso ni en salida ni en llegada
+filter(flights, !(arr_delay > 60 | dep_delay > 60))
+filter(flights, arr_delay <= 60, dep_delay <= 60)
+
+# NOTA: Intentar siempre filtrar a partir de variables explicitas del data frame.
