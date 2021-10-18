@@ -181,3 +181,17 @@ select(flights, matches("(.)\\1")) # busca caracteres repetidos
 select(flights, num_range("x", 1:5))
 
 ?select
+
+### RENAME ----
+# La diferencia es que mantiene el resto de variables, cosa que no
+#ocurre con select, que las descarta.
+
+rename(flights, deptime = dep_time)
+
+select(flights, deptime = dep_time)
+
+# También podría usar everything() para que aparezcan el resto
+# de variables. De esta forma tambien podemos ordenar las columnas
+# introduciendo primero el orden de las variables que queremos tener
+# primero y luego con everything añadir el resto.
+select(flights, time_hour, distance, air_time, everything())
