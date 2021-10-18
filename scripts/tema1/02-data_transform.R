@@ -342,6 +342,37 @@ delays <- flights %>%
 # x %>% f(y) %>% g(z) %>% h(t) <-> h(g(f(x,y),z),t)
 
 ## ggvis <-> ggplot2
-## Para escribir la tubería a través del teclado: cmd + shift + M
+## Para escribir la tubería a través del teclado: cmd + shift + M.
 
-       
+
+### Eliminando los NA de los datos ----
+
+flights %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay, na.rm = T),
+            median = median(dep_delay, na.rm = T),
+            sd = sd(dep_delay, na.rm = T),
+            count = n()
+  )
+# En este dataset, un NA significa que el vuelo ha sido cancelado
+
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay, na.rm = T),
+            median = median(dep_delay, na.rm = T),
+            sd = sd(dep_delay, na.rm = T),
+            count = n()
+  )
+
+# De forma más conjunta:
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay)) %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay, na.rm = T),
+            median = median(dep_delay, na.rm = T),
+            sd = sd(dep_delay, na.rm = T),
+            count = n()
+  )
