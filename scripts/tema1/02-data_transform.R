@@ -135,7 +135,7 @@ arrange(flights, desc(arr_delay))
 
 # Los valores NA de la columna siempre quedarán al final.
 arrange(df, desc(x))
-arrange(df, desc(x))
+arrange(df, x)
 
 # Vuelo que menos distancia recorrió
 arrange(flights, distance)[1,]
@@ -195,3 +195,31 @@ select(flights, deptime = dep_time)
 # introduciendo primero el orden de las variables que queremos tener
 # primero y luego con everything añadir el resto.
 select(flights, time_hour, distance, air_time, everything())
+
+
+
+### MUTATE ----
+
+flights_new <- select(flights,
+                      year:day,
+                      ends_with("delay"),
+                      distance,
+                      air_time)
+
+# Añadimos las variables ganancia de tiempo, tiempo del vuelo por horas,
+# velocidad del vuelo, ganancia de tiempo por horas(minutos que se retrasa o 
+# adelante en 1 hora).
+flights_new <- mutate(flights_new,
+       time_gain = arr_delay - dep_delay, #diff_t (min)
+       air_time_hour = air_time / 60,
+       flight_speed = distance / air_time_hour, # v = s/t (km/h)
+       time_gain_per_hour = time_gain / air_time_hour
+       )
+
+# Si queremos obtener un dataset exclusivamente con las nuevas variables creadas
+# usamos la función transmute.
+transmute(flights_new,
+            time_gain = arr_delay - dep_delay, 
+            air_time_hour = air_time / 60,
+            flight_speed = distance / air_time_hour, 
+            time_gain_per_hour = time_gain / air_time_hour) -> data_from_flights
