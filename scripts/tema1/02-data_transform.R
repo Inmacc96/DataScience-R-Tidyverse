@@ -309,4 +309,39 @@ mutate(summarise(group_by(flights, carrier),
 #global ya que hay unos pocos vuelos con altos retrasos por lo que 
 #distorsiona la media.
 
+
+## PIPES ----
+
+group_by_dest <- group_by(flights, dest)
+delay <- summarise(group_by_dest,
+                   count = n(),
+                   dist = mean(distance, na.rm = T),
+                   delay = mean(arr_delay, na.rm = T))
+delay <- filter(delay, count > 100, dest != "HNL")
+
+ggplot(data = delay , mapping = aes(x = dist, y = delay)) +
+  geom_point(aes(size = count), alpha = 0.2 ) +
+  geom_smooth(se = F) +
+  geom_text(aes(label = dest), alpha = 0.3)
+
+# Vemos que a partir de aproximadamente 700 millas, el retraso
+# se va disminuyendo.
+
+
+delays <- flights %>%
+  group_by(dest)  %>%
+  summarise( 
+    count = n(),
+    dist = mean(distance, na.rm = T),
+    delay = mean(arr_delay, na.rm = T)
+  ) %>%
+  filter(count > 100, dest != "HNL")
+
+# x %>% f(y) <-> f(x,y)
+# x %>% f(y) %>% g(z) <-> g(f(x,y),z)
+# x %>% f(y) %>% g(z) %>% h(t) <-> h(g(f(x,y),z),t)
+
+## ggvis <-> ggplot2
+## Para escribir la tubería a través del teclado: cmd + shift + M
+
        
