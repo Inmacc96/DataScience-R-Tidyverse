@@ -280,3 +280,33 @@ transmute(flights,
           dep_delay,
           ntile(dep_delay, n = 100)
 )
+
+
+
+### SUMMARISE ----
+
+# El tiempo promedio de retraso de todos los vuelos de 2013 
+summarise(flights,
+          delay = mean(dep_delay, na.rm = T))
+
+# Retraso por mes y año en promedio
+by_month_group <- group_by(flights, year, month)
+summarise(by_month_group, delay = mean(dep_delay, na.rm = T))
+
+# Retraso diaro en promedio, mediana, min
+by_day_group <- group_by(flights, year, month, day)
+summarise(by_day_group, delay = mean(dep_delay, na.rm = T),
+          median = median(dep_delay, na.rm = T),
+          min = min(dep_delay, na.rm = T))
+
+mutate(summarise(group_by(flights, carrier),
+          delay = mean(dep_delay, na.rm = T),
+          delay_median = median(dep_delay, na.rm = T)),
+          sorted = min_rank(delay))
+# La compañia que más tiende a retrasarse es F9 y la que menos US. Sin embargo
+# si nos fijamos en la mediana, vemos que la mayoría tienden a no retrasarse
+#En este caso la media no es una medida buena para mirar el comportamiento
+#global ya que hay unos pocos vuelos con altos retrasos por lo que 
+#distorsiona la media.
+
+       
