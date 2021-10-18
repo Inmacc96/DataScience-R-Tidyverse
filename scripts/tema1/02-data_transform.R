@@ -223,3 +223,60 @@ transmute(flights_new,
             air_time_hour = air_time / 60,
             flight_speed = distance / air_time_hour, 
             time_gain_per_hour = time_gain / air_time_hour) -> data_from_flights
+
+
+### Funciones útiles para mutar los datos ----
+
+# * Operaciones aritmétricas: +, - , * , / , ^  (hours + 60 * minutes)
+# * Agregados de funciones: x/sum(x): proporción sobre el total
+#                           x - mean(x): distancia respecto de media
+#                           (x - mean(x))/sd(x): tipificación de los datos
+#                           (x - min(x))/(max(x) - min(x)): estandarizar entre [0,1]
+# * Aritmétrica modular: %/%: cociente de la división entera
+#                        %%: resto de la división entera
+#                        x == y * (x%/%y) + (x%%y) ALGORITMO DE EUCLIDES
+
+# Obtenemos del tiempo del vuelo, las horas y minutos de ese vuelo.
+transmute(flights,
+          air_time,
+          hour_air = air_time %/% 60,
+          minute_air = air_time %% 60)
+
+# * Logaritmos: log() -> logaritmo en base e, log2(), log10()
+# * Offsets: lead() -> Mueve hacia la izquierda, lag() -> Mueve hacia la derecha
+df <- 1:12
+lag(df)
+lead(df)
+lead(lag(df))
+
+# * Funciones acumulativas -> cumsum(), cumprod(), cummin(), cummax(), cummean()
+cumsum(df)
+cumprod(df)
+cummin(df)
+cummax(df)
+cummean(df)
+
+# * Comparaciones lógicas: >, >=, <, <=, ==, !=
+# Creamos un variable para ver o no si los vuelos fueron retrasados.
+transmute(flights,
+          dep_delay,
+          has_been_delayed = (dep_delay > 0)
+)
+
+# *Rankings:min_rank() -> posiciones del vector ordenado
+df <- c(7,1,2,5,3,8,NA,3,4,-2)
+df
+min_rank(df)
+# Variantes a min_rank(): row_number() NO hay posiciones repetidas
+# dense_rank(), percent_rank() Porcentaje respecto al total,
+# cume_dist() Porcentaje acumulado redondeado
+# ntile() Distribución por cuantiles
+row_number(df)
+dense_rank(df)
+cume_dist(df)
+ntile(df, n = 4)
+
+transmute(flights,
+          dep_delay,
+          ntile(dep_delay, n = 100)
+)
