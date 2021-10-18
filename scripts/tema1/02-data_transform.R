@@ -145,3 +145,39 @@ arrange(flights, distance)[1,]
 # Vuelo que más distancia recorrió
 arrange(flights, desc(distance))[1,]
 
+
+
+### SELECT ----
+
+# Seleccionando filas:
+View(sorted_date[1024:1068,])
+
+# Seleccionando columnas(variables):
+View(select(sorted_date[1024:1068,], dep_delay, arr_delay))
+
+# Año, mes y día de todos los vuelos.
+View(select(flights, year, month, day))
+     
+# Todos los vuelos con las variables desde dep_time hasta arr_delay
+select(flights,dep_time:arr_delay)
+
+# Todos los vuelos con todas las variables menos año, mes y día
+select(flights,-(year:day))
+
+# Todos los vuelos con aquellas variables comiencen por dep
+select(flights, starts_with("dep"))
+
+# Todas los vuelos con aquellas variables que terminen por delay
+select(flights, ends_with("delay"))
+
+# Todas los vuelos con aquellas variables que contengan una st
+select(flights, contains("st"))
+
+# Filtrado con expresión regular
+select(flights, matches("(.)\\1")) # busca caracteres repetidos
+#busca cualquier cosa que aparezca al menos dos veces
+
+# Buscaría variables de la forma x1,x2,x3,x4,x5
+select(flights, num_range("x", 1:5))
+
+?select
