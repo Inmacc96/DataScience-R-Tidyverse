@@ -376,3 +376,42 @@ not_cancelled <- flights %>%
             sd = sd(dep_delay, na.rm = T),
             count = n()
   )
+
+# Retrasos por avión
+delay_numtail <- not_cancelled %>% 
+  group_by(tailnum) %>% 
+  summarise(delay = mean(arr_delay))
+
+ggplot(data = delay_numtail, mapping = aes(x = delay)) +
+  geom_freqpoly(binwidth = 5)
+# La mayoría de aviones se retrasan menos de 50 min e incluso también hay
+# bastantes que llegan antes. Es raro que el avión se retrase más de una hora.
+
+ggplot(data = delay_numtail, mapping = aes(x = delay)) +
+  geom_histogram(binwidth = 5)
+# Es más adecuado utilizar un polígono de frecuencias para datos continuos.
+
+# Podemos ver que hay aviones cuyo retraso en media es entorno a 300 min, que
+# son 5h aprox. Sin embargo, sería interesante estudiar la relación
+# entre el retraso que tiene ese avión frente al nº de veces que ha salido.
+
+
+# Número de vuelos frente a el promedio del retraso del avión.
+delay_numtail <- not_cancelled %>%
+  group_by(tailnum) %>% 
+  summarise(delay = mean(arr_delay),
+            count = n()
+            )
+
+ggplot(data = delay_numtail, mapping = aes(x = count, y = delay)) +
+  geom_point(alpha = 0.2)
+# Cuanto más vuela un avión, más cercano a 0 tienden a ser su retraso.
+
+
+# Eliminamos los aviones que han valado menos de 30 veces.
+delay_numtail %>% 
+  filter(count>30) %>% 
+  ggplot(mapping = aes(x = count, y = delay)) +
+  geom_point(alpha = 0.2)
+# Podemos ver que la dispersión ha disminuido bastante y es raro que se retrase
+# más de 40 min.
