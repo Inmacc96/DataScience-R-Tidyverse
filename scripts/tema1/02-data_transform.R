@@ -415,3 +415,57 @@ delay_numtail %>%
   geom_point(alpha = 0.2)
 # Podemos ver que la dispersión ha disminuido bastante y es raro que se retrase
 # más de 40 min.
+
+
+
+
+### BATTING DATASET (BASEBALL) ----
+
+library(Lahman)
+View(Lahman::Batting)
+# Cómo de bueno es un bateador: promedio de bates que ha pegado el jugador
+# AB: nº de veces que bateó(darle a la bola)
+# H: nº de veces que le dió a la bola y llega a la base.
+
+batting <- as_tibble(Lahman::Batting)
+
+batters <- batting %>% 
+  group_by(playerID) %>% 
+  summarise(hits = sum(H, na.rm = T),
+            bats = sum(AB, na.rm = T),
+            bat_average = hits / bats # Porcentaje de veces que acertó dandole a la bola
+            )
+
+# Eliminando los jugadores que han bateado pocas veces
+batters %>% 
+  filter(bats > 100) %>% 
+  ggplot(mapping = aes(x = bats, y = bat_average)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(se = F)
+# Cuantas más veces batea mejor es su promedio, es decir, más veces acierta. 
+
+# HIPOTESIS: Los mejores bateadores son lo que llevan más tiempo bateando 
+# y no es fruto del azar.
+
+batters %>% 
+  arrange(desc(bat_average))
+# De aqui podemos decir que hay jugadores con suerte, de un bateo, consigue 
+# acertas xD
+
+batters %>% 
+  filter( bats > 100) %>% 
+  arrange(desc(bat_average))
+# Si quitamos los que han bateado menos de 100 podemos ver que efectivamente
+# la mayoría de los que tienen un mejor promedio es porque han bateado bastante.
+# Es decir, son gente que han ganado experiencia sabiendo jugar.
+
+## EJERCICIO: Detectar a jugadores buenos ----
+
+# ¿ Depende de si el jugador está en un equipo u otro para tener mejor porcentaje
+# de acierto?
+# Se podría ver el porcentaje de acierto de cada jugador por liga.
+# HOME RUN: se da cuando el bateador hace contacto con la pelota de una
+# manera que le permita recorrer las bases y anotar una carrera (junto 
+# con todos los corredores en base) en la misma jugada, sin que se 
+# registre ningún out ni error de la defensa.
+
