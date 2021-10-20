@@ -604,4 +604,25 @@ business %>%
   ungroup %>%
   summarise(n_fl = n())
 
-# Después de los resumenes NO se puede hacer ungroup()
+# Después de los resumenes NO se puede hacer ungroup().
+
+
+### Mutates y filters por subconjuntos ----
+
+flights %>% 
+  group_by(year, month, day) %>% 
+  filter(rank(desc(arr_delay)) < 10) -> temp
+View(temp) # los 10 peores vuelos de cada día (los que más se retrasaron)
+
+
+# lugares más visitados, donde más se vuelan
+popular_dest <- flights %>% 
+  group_by(dest) %>%
+  filter(n()>365) # hay más de 365 vuelos al año.
+View(popular_dest)
+
+
+popular_dest %>% 
+  filter(arr_delay > 0) %>% 
+  mutate(prop_delay = arr_delay / sum(arr_delay)) %>% 
+  select(year:day, dest, arr_delay, prop_delay)
