@@ -469,3 +469,114 @@ batters %>%
 # con todos los corredores en base) en la misma jugada, sin que se 
 # registre ningún out ni error de la defensa.
 
+
+
+
+
+## FUNCIONES ESTADÍSTICAS PARA SUMMARISE() ----
+
+# * Medidas de Centralización: media, mediana
+
+not_cancelled %>% 
+  group_by(carrier) %>% 
+  summarise(
+    mean = mean(arr_delay), # media de todos los retrasos/adelantos
+    mean2 = mean(arr_delay[arr_delay>0]), # media de todos los retrasos
+    median = median(arr_delay) # mediana de los retrasos
+  )
+# En la compañia F9, el 50% de los vuelos tiene un retraso mayor a 6 min
+# y el otro 50% tienen un retraso menor a 6 min.
+
+
+# * Medidades de dispersión: sd, rango intercuartilico etc. Son medidas
+# para saber si los datos están muy concentrados entorno a la media o
+# por el contrario hay mucha disparidad.
+
+not_cancelled %>% 
+  group_by(carrier) %>% 
+  summarise(
+    sd = sd(arr_delay),
+    iqr = IQR(arr_delay),
+    mad = mad(arr_delay) 
+  ) %>% 
+  arrange(desc(sd))
+  
+# La compaía HA tiene un error estandar de hasta 75 min de arriba/abajo.
+# El rango intercuartilico es 30.5 min arriba/abajo de la mediana y el
+# mad es 22.
+
+?sd
+?IQR
+?mad #mad: desviación absoluta respecto de la mediana. robusto con los outliers.
+
+# Medidas de orden: min, max, cuantiles.
+
+not_cancelled %>% 
+  group_by(carrier) %>% 
+  summarise(
+    first = min(arr_delay),
+    q1 = quantile(arr_delay, 0.25),
+    median = quantile(arr_delay, 0.5), ## median()
+    q3 = quantile(arr_delay, 0.75),
+    last = max(arr_delay)
+  )
+# INTERPRETACIÓN:
+# En la compañía 9E, el vuelo menos retrasado ha salido 68 minutos antes.
+# q1: El 25 % de los aviones salieron con menos de 21 minutos de retraso
+# y el otro 75% de los aviones salieron con más de menos de 21 minutos de retraso.
+# median: La mediana significa que el 50% de los vuelos salieron con 7 minutos
+# menos de los previsto y el otro 50% con más de 7 minutos menos de lo previsto.
+# q3: El 75% de los vuelos salen con 15 minutos de retraso o mucho menos 
+# y el 25% restante con más de 15 minutos de retraso.
+# last: El vuelo que más se retrasó fue con 744 minutos de retraso.
+
+# * Medidas de posición
+
+not_cancelled %>% 
+  group_by(carrier) %>% 
+  summarise(
+    first_dep = first(dep_time),
+    second_dep = nth(dep_time, 2),
+    third_dep = nth(dep_time,3),
+    last_dep = last(dep_time)
+  )
+
+not_cancelled %>% 
+  group_by(carrier) %>% 
+  mutate(rank = min_rank(dep_time)) %>% 
+  filter(rank %in% range(rank)) -> temp
+
+View(temp)
+
+
+# * Funciones de conteo
+
+flights %>% 
+  group_by(dest) %>% 
+  summarise(
+    count = n(), # nº de vuelos que llegan a dest
+    carriers = n_distinct(carrier),# nº de compañías que llegan a dest
+    arrivals = sum(!is.na(arr_delay)) # nº de vuelos que realmente llegan a dest
+  ) %>% 
+  arrange(desc(carriers))
+
+not_cancelled %>% 
+  count(dest)
+
+not_cancelled %>% 
+  count(tailnum, wt = distance)
+# Nos dice para cada avión, el nº de millas total que ha recorrido
+
+## sum / mean de valores lógicos
+
+# Cuantos vuelos salen antes de la 5 de la mañana
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_prior_5 = sum(dep_time < 500))
+
+# Qué porcentaje de los vuelos de cada compañia se retrasan más de una hora
+not_cancelled %>% 
+  group_by(carrier) %>% 
+  summarise(more_than_hour_delay = mean(arr_delay>60)) %>% 
+  arrange(desc(more_than_hour_delay))
+# El 10% de los vuelos de 9E se retrasan más de una hora.
