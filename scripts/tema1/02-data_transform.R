@@ -580,3 +580,28 @@ not_cancelled %>%
   summarise(more_than_hour_delay = mean(arr_delay>60)) %>% 
   arrange(desc(more_than_hour_delay))
 # El 10% de los vuelos de 9E se retrasan más de una hora.
+
+
+## Agrupaciones múltiples ----
+
+daily <- group_by(flights, year, month, day)
+(per_day <- summarise(daily, n_fl = n()))
+(per_month <- summarise(per_day, n_fl = sum(n_fl)))
+(per_year <- summarise(per_month, n_fl = sum(n_fl)))
+
+business <- group_by(flights, carrier, dest, origin)
+(detail <- summarise(business, n_fl = n()))
+summarise(business, n_fl = n()) %>% 
+  summarise(n_fl = sum(n_fl)) %>% 
+  summarise(n_fl = sum(n_fl))
+
+
+daily %>% 
+  ungroup() %>% # desagrupación
+  summarise(n_fl = n())
+
+business %>% 
+  ungroup %>%
+  summarise(n_fl = n())
+
+# Después de los resumenes NO se puede hacer ungroup()
